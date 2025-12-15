@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
     const updatedReport = await Report.findByIdAndUpdate(
       { _id: id },
       { $set: customerUpdates },
-      { new: true }
+      { new: true, runValidators: true }
     );
     if (!updatedReport) {
       return res.status(404).json({ message: 'Report not found' });

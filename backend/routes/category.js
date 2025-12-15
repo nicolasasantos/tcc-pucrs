@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
     const updatedCategory = await Category.findByIdAndUpdate(
       { _id: id },
       { $set: customerUpdates },
-      { new: true }
+      { new: true, runValidators: true }
     );
     if (!updatedCategory) {
       return res.status(404).json({ message: 'Category not found' });

@@ -196,7 +196,7 @@ describe('Report Routes (Integration Test)', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.title).toBe(updates.title);
       expect(res.body.vote_fix).toBe(updates.vote_fix);
-      expect(res.body.category.name).toBe('Test Category');
+      expect(res.body.severity).toBe(updates.severity);
 
       // Verify the change in the database
       const updatedInDB = await Report.findById(testReport._id);
@@ -220,7 +220,9 @@ describe('Report Routes (Integration Test)', () => {
 
       expect(res.statusCode).toBe(500);
       expect(res.body).toHaveProperty('message', 'Failed to update report');
-      expect(res.body.error).toMatch(/Cast to string failed for value "critical"/);
+      expect(res.body.error).toMatch(
+        'Validation failed: severity: `critical` is not a valid enum value for path `severity'
+      );
     });
   });
 
