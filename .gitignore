@@ -1,0 +1,98 @@
+# Operating system
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Node.js / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp/
+.pnp.js
+
+# Environment files
+.env
+.env.*.local
+.env.local
+.env.test
+.env.production
+local.env
+
+# Build / output
+dist/
+build/
+out/
+public/build/
+.cache/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+coverage-report/
+*.tgz
+
+# Angular (CLI / generated / cache)
+.angular/
+.angular/cache/
+out-tsc/
+# AOT / generated artifacts
+*.ngfactory.ts
+*.ngsummary.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# Temporary / swap
+*.swp
+*.swo
+*~
+~$*
+*.tmp
+
+# Archives / packages / binaries
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.bak
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.jar
+*.war
+*.ear
+*.o
+
+# Docker
+docker-compose.override.yml
+.env.docker
+
+# OS generated thumbnails, metadata
+Icon?
+.NFS*
+
+# Optional: ignore OS/IDE specific project files (uncomment if used)
+# .idea/
+# *.iml
+
+# Keep this file committed — adjust entries as needed for your project.
