@@ -1,0 +1,18 @@
+<h5>Lista de avarias reportadas</h5>
+
+<div
+  *ngFor="let report of reports"
+  class="mat-elevation-z2 p-2 my-2 border rounded d-flex align-items-center"
+>
+  {{ report.title }}
+  {{ report.description }}
+  {{ report.image }}
+  {{ report.location }}
+  {{ report.name }}
+  {{ report.email }}
+  {{ report.vote_fix }}
+  {{ report.severity }}
+  {{ report.created_at }}
+</div>
+
+<button matButton="filled" [routerLink]="'/report/create'">Criar novo reporte</button>
