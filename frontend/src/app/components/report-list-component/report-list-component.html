@@ -1,18 +1,76 @@
-<h5>Lista de avarias reportadas</h5>
+<h2>Lista de avarias reportadas</h2>
 
-<div
-  *ngFor="let report of reports"
-  class="mat-elevation-z2 p-2 my-2 border rounded d-flex align-items-center"
->
-  {{ report.title }}
-  {{ report.description }}
-  {{ report.image }}
-  {{ report.location }}
-  {{ report.name }}
-  {{ report.email }}
-  {{ report.vote_fix }}
-  {{ report.severity }}
-  {{ report.created_at }}
+<div *ngIf="reports$ | async as reports">
+  <section
+    *ngFor="let report of reports"
+    class="report-card mat-elevation-z2 p-4 my-3 border rounded"
+  >
+    <div
+      class="card-header d-flex justify-content-between align-items-center mb-3 border-bottom pb-2"
+    >
+      <h3 class="m-0 text-primary">{{ report.title }}</h3>
+
+      <span class="badge" [ngClass]="getSeverityClass(report.severity)">
+        {{ getSeverityDisplay(report.severity) | uppercase }}
+      </span>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-group">
+        <p>
+          <strong>Localização:</strong>
+
+          <a
+            [href]="
+              'https://www.google.com/maps/search/?api=1&query=' +
+              report.location.latitude +
+              ',' +
+              report.location.longitude
+            "
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ver no Mapa
+          </a>
+        </p>
+
+        <p><strong>Reportado por:</strong> {{ report.name }}</p>
+        <p>
+          <strong>Email:</strong> <a href="mailto:{{ report.email }}">{{ report.email }}</a>
+        </p>
+      </div>
+
+      <div class="detail-group">
+        <p><strong>Criado em:</strong> {{ report.created_at | date : 'medium' }}</p>
+        <p>
+          <strong>Votos para Corrigir:</strong>
+          <span class="vote-count">{{ report.vote_fix }}</span>
+        </p>
+        <p>
+          <strong>Imagem:</strong>
+          <a *ngIf="report.image" [href]="report.image" target="_blank">Ver Imagem</a>
+          <span *ngIf="!report.image" class="text-muted">Nenhuma imagem</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-3 pt-3 border-top">
+      <p><strong>Descrição Completa:</strong></p>
+      <p class="description-text">{{ report.description }}</p>
+    </div>
+  </section>
+
+  <div *ngIf="reports.length === 0" class="alert alert-info mt-4">
+    Nenhuma avaria reportada encontrada.
+  </div>
 </div>
 
-<button matButton="filled" [routerLink]="'/report/create'">Criar novo reporte</button>
+<div *ngIf="!(reports$ | async)">
+  <p class="text-center mt-5">Carregando avarias...</p>
+</div>
+
+<div class="text-center mt-5">
+  <button mat-flat-button color="primary" [routerLink]="'/report/create'">
+    Criar novo reporte
+  </button>
+</div>

@@ -1,0 +1,100 @@
+h2 {
+  font-size: 1.4rem;
+  color: #607d8b;
+  margin-bottom: 20px;
+}
+
+.report-card {
+  background-color: #ffffff;
+  border-radius: 8px !important;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.report-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header h3 {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.details-grid {
+  display: flex;
+  gap: 40px; /* Space between the detail columns */
+  margin-bottom: 15px;
+}
+
+.detail-group {
+  flex: 1; /* Makes columns share space equally */
+}
+
+.detail-group p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.detail-group strong {
+  color: #333;
+  display: inline-block;
+  min-width: 100px; /* Aligns labels nicely */
+}
+
+/* Severity badge styling */
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* Severity specific colors (ensure these names match the function output) */
+.severity-alta {
+  /* 'high' */
+  background-color: #f44336; /* Red */
+  color: white;
+}
+.severity-media {
+  /* 'medium' */
+  background-color: #ff9800; /* Orange */
+  color: white;
+}
+.severity-baixa {
+  /* 'low' */
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+.severity-default {
+  /* fallback */
+  background-color: #9e9e9e; /* Grey */
+  color: white;
+}
+
+/* Highlight for vote count */
+.vote-count {
+  font-weight: bold;
+  color: #007bff; /* A prominent blue color */
+}
+
+/* Styling for the map container and iframe */
+.map-container {
+  display: block;
+  width: 100%;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.description-text {
+  white-space: pre-wrap;
+  color: #555;
+}

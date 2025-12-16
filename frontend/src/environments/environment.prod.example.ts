@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   apiUrl: 'http://localhost:3000',
-  apiKey: 'AIzaSyBHiZl7yuVlKjRFYG6jG2wqYxpT1aLc33o',
+  apiKey: 'e969b9894837421eabcfa23bb6cc3d05',
 };
