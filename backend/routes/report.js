@@ -2,19 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Report = require('../models/Report');
 
-//GET all reports
 router.get('/', async (req, res) => {
   try {
-    const reports = await Report.find().populate('category');
+    const { severity, category } = req.query;
+    let filter = {};
+
+    if (severity && severity !== 'all') {
+      filter.severity = severity;
+    }
+
+    if (category && category !== 'all') {
+      filter.category = category;
+    }
+
+    const reports = await Report.find(filter).populate('category').sort({ created_at: -1 });
+
     res.status(200).json(reports);
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: 'An error occured while fetching the reports', error: err.message });
+    res.status(500).json({
+      message: 'An error occurred while fetching the reports',
+      error: err.message,
+    });
   }
 });
 
-//GET a report by ID
+// GET a report by ID
 router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -30,7 +42,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-//POST a new report
+// POST a new report
 router.post('/', async (req, res) => {
   try {
     const newReport = new Report(req.body);
@@ -41,7 +53,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-//PUT update a report by ID
+// PUT update a report by ID
 router.put('/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -60,7 +72,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-//DELETE a report by ID
+// DELETE a report by ID
 router.delete('/:id', async (req, res) => {
   try {
     const id = req.params.id;
