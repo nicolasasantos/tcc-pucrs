@@ -1,76 +1,107 @@
-<h2>Lista de avarias reportadas</h2>
-
-<div *ngIf="reports$ | async as reports">
-  <section
-    *ngFor="let report of reports"
-    class="report-card mat-elevation-z2 p-4 my-3 border rounded"
-  >
-    <div
-      class="card-header d-flex justify-content-between align-items-center mb-3 border-bottom pb-2"
+<div class="main-container">
+  <div class="header-section">
+    <h2>Avarias Reportadas</h2>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="'/report/create'"
+      class="desktop-create-btn"
     >
-      <h3 class="m-0 text-primary">{{ report.title }}</h3>
+      <mat-icon>add</mat-icon> Nova Avaria
+    </button>
+  </div>
 
-      <span class="badge" [ngClass]="getSeverityClass(report.severity)">
-        {{ getSeverityDisplay(report.severity) | uppercase }}
-      </span>
-    </div>
+  <div class="filter-section">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Gravidade</mat-label>
+      <mat-select [(value)]="selectedSeverity">
+        <mat-option value="all">Todas</mat-option>
+        <mat-divider></mat-divider>
+        <mat-option value="low">Baixa</mat-option>
+        <mat-option value="medium">Média</mat-option>
+        <mat-option value="high">Alta</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <div class="details-grid">
-      <div class="detail-group">
-        <p>
-          <strong>Localização:</strong>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Categoria</mat-label>
+      <mat-select [(value)]="selectedCategory">
+        <mat-option value="all">Todas</mat-option>
+        <mat-divider></mat-divider>
+        <mat-option *ngFor="let cat of categories" [value]="cat._id">
+          {{ cat.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-          <a
-            [href]="
-              'https://www.google.com/maps/search/?api=1&query=' +
-              report.location.latitude +
-              ',' +
-              report.location.longitude
-            "
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ver no Mapa
-          </a>
-        </p>
+    <button mat-flat-button color="accent" (click)="applyFilter()" class="filter-btn">
+      <mat-icon>filter_list</mat-icon> APLICAR
+    </button>
+  </div>
 
-        <p><strong>Reportado por:</strong> {{ report.name }}</p>
-        <p>
-          <strong>Email:</strong> <a href="mailto:{{ report.email }}">{{ report.email }}</a>
-        </p>
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Buscando dados no servidor...</p>
+  </div>
+
+  <div class="report-list" *ngIf="!isLoading">
+    <mat-card
+      *ngFor="let report of reports"
+      class="report-card clickable-card"
+      [routerLink]="['/report/details', report._id]"
+    >
+      <div class="image-container">
+        <img *ngIf="report.image" [src]="report.image" alt="Foto da avaria" />
+        <div *ngIf="!report.image" class="no-image-placeholder">
+          <mat-icon>image_not_supported</mat-icon>
+          <span>Sem foto</span>
+        </div>
       </div>
 
-      <div class="detail-group">
-        <p><strong>Criado em:</strong> {{ report.created_at | date : 'medium' }}</p>
-        <p>
-          <strong>Votos para Corrigir:</strong>
-          <span class="vote-count">{{ report.vote_fix }}</span>
-        </p>
-        <p>
-          <strong>Imagem:</strong>
-          <a *ngIf="report.image" [href]="report.image" target="_blank">Ver Imagem</a>
-          <span *ngIf="!report.image" class="text-muted">Nenhuma imagem</span>
-        </p>
+      <div class="card-header-custom">
+        <div class="title-area">
+          <mat-card-title>{{ report.title }}</mat-card-title>
+        </div>
+        <span class="severity-badge" [ngClass]="getSeverityClass(report.severity)">
+          {{ getSeverityDisplay(report.severity) | uppercase }}
+        </span>
       </div>
+
+      <mat-card-content>
+        <div class="info-row">
+          <mat-icon class="icon-gray">person</mat-icon>
+          <span>{{ report.name }}</span>
+        </div>
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions class="actions-footer">
+        <div class="vote-badge">
+          <mat-icon>thumb_up</mat-icon>
+          <span class="vote-number">{{ report.vote_fix }}</span>
+          <span class="vote-label">Votos</span>
+        </div>
+        <button mat-icon-button color="primary">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div *ngIf="reports.length === 0 && !isLoading" class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <p>Nenhuma avaria encontrada.</p>
     </div>
 
-    <div class="mt-3 pt-3 border-top">
-      <p><strong>Descrição Completa:</strong></p>
-      <p class="description-text">{{ report.description }}</p>
+    <div class="list-footer-actions">
+      <button mat-stroked-button color="primary" [routerLink]="['/']" class="full-width-btn">
+        <mat-icon>home</mat-icon>
+        VOLTAR AO INÍCIO
+      </button>
     </div>
-  </section>
-
-  <div *ngIf="reports.length === 0" class="alert alert-info mt-4">
-    Nenhuma avaria reportada encontrada.
   </div>
 </div>
 
-<div *ngIf="!(reports$ | async)">
-  <p class="text-center mt-5">Carregando avarias...</p>
-</div>
-
-<div class="text-center mt-5">
-  <button mat-flat-button color="primary" [routerLink]="'/report/create'">
-    Criar novo reporte
-  </button>
-</div>
+<button mat-fab color="primary" class="fab-mobile" [routerLink]="'/report/create'">
+  <mat-icon>add</mat-icon>
+</button>
