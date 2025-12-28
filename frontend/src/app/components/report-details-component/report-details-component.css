@@ -1,0 +1,204 @@
+/* Título Principal Estilizado */
+h1 {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  color: #263238;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+  margin: 24px 0;
+  padding: 0 16px;
+}
+
+.main-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+.nav-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #37474f;
+}
+
+.details-card {
+  border-radius: 12px;
+  overflow: visible !important;
+}
+
+.details-image-container {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  max-height: 400px;
+  background-color: #eeeeee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details-image-container img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.no-image {
+  color: #bdbdbd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-card-content {
+  padding: 16px !important;
+}
+
+/* Alinhamento dos Filtros */
+.info-row-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 20px 0;
+}
+
+.severity-section,
+.category-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0 !important;
+}
+
+.field-label {
+  font-weight: 700 !important;
+  color: #333;
+}
+
+/* Badges Alinhados */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #f0f2f5;
+  color: #455a64;
+  padding: 0 10px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #cfd8dc;
+  box-sizing: border-box;
+}
+
+.category-badge mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Cores das severidades */
+.severity-alta {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+.severity-media {
+  background-color: #fff3e0;
+  color: #ef6c00;
+  border: 1px solid #ffe0b2;
+}
+.severity-baixa {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+.severity-default {
+  background-color: #f5f5f5;
+  color: #616161;
+}
+
+/* Títulos de Seção */
+h3.field-label {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  border-left: 4px solid #3f51b5;
+  padding-left: 10px;
+}
+
+.description-text {
+  color: #555;
+  line-height: 1.6;
+  padding: 5px 0;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: #616161;
+  font-size: 0.9rem;
+}
+
+/* Ações e Votos */
+.vote-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px !important;
+  background-color: #fafafa;
+}
+
+.vote-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vote-info .count {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.action-btn {
+  width: 100%;
+  height: 48px;
+}
+
+.map-container {
+  height: 300px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 50px;
+}

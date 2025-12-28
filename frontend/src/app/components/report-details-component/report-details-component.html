@@ -1,1 +1,96 @@
-<p>report-details-component works!</p>
+<div class="main-container">
+  <div class="nav-bar">
+    <span class="nav-title">Detalhes da Avaria</span>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando informações...</p>
+  </div>
+
+  <mat-card *ngIf="report && !isLoading" class="details-card">
+    <div class="details-image-container">
+      <img *ngIf="report.image" [src]="report.image" alt="Imagem da avaria" />
+      <div *ngIf="!report.image" class="no-image">
+        <mat-icon>image_not_supported</mat-icon>
+        <span>Nenhuma imagem anexada</span>
+      </div>
+    </div>
+
+    <mat-card-header>
+      <mat-card-title>{{ report.title }}</mat-card-title>
+      <mat-card-subtitle>
+        <strong class="field-label">Reportado por:</strong> {{ report.name }} em
+        {{ report.created_at | date : 'dd/MM/yyyy HH:mm' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-row-container">
+        <div class="severity-section">
+          <span class="field-label">Gravidade:</span>
+          <span class="badge" [ngClass]="getSeverityClass(report.severity)">
+            {{ getSeverityDisplay(report.severity) | uppercase }}
+          </span>
+        </div>
+
+        <div class="category-section" *ngIf="report.category">
+          <span class="field-label">Categoria:</span>
+          <span class="category-badge">
+            <mat-icon>tag</mat-icon>
+            {{ report.category.name }}
+          </span>
+        </div>
+      </div>
+
+      <div class="description-section">
+        <h3 class="field-label">Descrição</h3>
+        <p class="description-text">{{ report.description }}</p>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="map-section">
+        <h3 class="field-label">Localização no Mapa</h3>
+        <div id="map" class="map-container"></div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="contact-info" *ngIf="report.email">
+        <mat-icon>email</mat-icon>
+        <strong class="field-label">E-mail para contato:</strong>
+        <span>{{ report.email }}</span>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="vote-actions">
+      <div class="vote-info">
+        <mat-icon color="primary">analytics</mat-icon>
+        <span class="count">{{ report.vote_fix }}</span>
+        <span class="text">votos para correção</span>
+      </div>
+
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="onVote()"
+        [disabled]="isVoting"
+        class="action-btn"
+      >
+        <mat-icon>thumb_up</mat-icon>
+        {{ isVoting ? 'VOTANDO...' : 'APOIAR ESTA CAUSA' }}
+      </button>
+
+      <button mat-stroked-button color="primary" [routerLink]="['/report/list']" class="action-btn">
+        <mat-icon>format_list_bulleted</mat-icon>
+        LISTA DE AVARIAS
+      </button>
+
+      <button mat-button color="primary" [routerLink]="['/']" class="action-btn">
+        <mat-icon>home</mat-icon>
+        VOLTAR AO INÍCIO
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
