@@ -40,4 +40,18 @@
       </mat-card-actions>
     </mat-card>
   </div>
+
+  <div class="modal-overlay" *ngIf="showWelcomeModal">
+    <div class="modal-content">
+      <mat-icon color="primary" style="transform: scale(2); margin-bottom: 20px">info</mat-icon>
+      <h2>Bem-vindo ao Sistema de Reporte</h2>
+      <p>
+        Esta plataforma permite que cidadãos participem ativamente da manutenção da cidade. Aqui,
+        você pode registrar problemas de infraestrutura — como buracos, iluminação pública ou
+        saneamento — diretamente no mapa. Nosso objetivo é conectar as necessidades da comunidade à
+        gestão urbana por meio da visualização de dados e transparência.
+      </p>
+      <button mat-flat-button color="primary" (click)="closeModal()">ENTENDIDO</button>
+    </div>
+  </div>
 </div>

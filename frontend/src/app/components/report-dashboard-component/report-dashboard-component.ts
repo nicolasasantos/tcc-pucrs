@@ -36,13 +36,33 @@ export class ReportDashboardComponent implements OnInit {
   private map: L.Map | undefined;
   reports: Report[] = [];
   isLoading = true;
+  showWelcomeModal = false;
 
   // Marking São Paulo as default location
   private defaultLocation: L.LatLngExpression = [-23.5505, -46.6333];
 
   ngOnInit(): void {
+    this.checkFirstVisit();
     this.fixLeafletIcons();
     this.loadReportsAndInitMap();
+  }
+
+  private checkFirstVisit(): void {
+    const hasVisited = localStorage.getItem('hasVisitedTCC');
+    if (!hasVisited) {
+      this.showWelcomeModal = true;
+    }
+  }
+
+  closeModal(): void {
+    this.showWelcomeModal = false;
+    localStorage.setItem('hasVisitedTCC', 'true');
+
+    setTimeout(() => {
+      if (this.map) {
+        this.map.invalidateSize();
+      }
+    }, 100);
   }
 
   private fixLeafletIcons(): void {
@@ -86,8 +106,11 @@ export class ReportDashboardComponent implements OnInit {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
 
-    this.getUserLocation();
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 200);
 
+    this.getUserLocation();
     this.addReportMarkers();
   }
 
@@ -96,9 +119,7 @@ export class ReportDashboardComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userPos: L.LatLngExpression = [position.coords.latitude, position.coords.longitude];
-
           this.map?.setView(userPos, 14);
-
           L.circle(userPos, {
             radius: 200,
             color: '#1976d2',
@@ -110,7 +131,6 @@ export class ReportDashboardComponent implements OnInit {
         },
         (error) => {
           console.warn('Geolocalização negada ou falhou. Usando posição padrão.');
-
           this.focusOnReports();
         }
       );
@@ -118,8 +138,6 @@ export class ReportDashboardComponent implements OnInit {
   }
 
   private addReportMarkers(): void {
-    const markers: L.Marker[] = [];
-
     this.reports.forEach((report) => {
       if (report.location?.latitude && report.location?.longitude) {
         const marker = L.marker([report.location.latitude, report.location.longitude]).addTo(
@@ -138,8 +156,6 @@ export class ReportDashboardComponent implements OnInit {
             this.router.navigate(['/report/details', report._id]);
           });
         });
-
-        markers.push(marker);
       }
     });
   }
