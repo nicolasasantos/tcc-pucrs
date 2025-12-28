@@ -1,0 +1,43 @@
+<div class="dashboard-wrapper">
+  <div id="main-map" class="full-map"></div>
+
+  <div class="overlay-panel">
+    <mat-card class="dashboard-card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon color="primary">location_city</mat-icon>
+        </div>
+        <mat-card-title>Monitoramento Urbano</mat-card-title>
+        <mat-card-subtitle>
+          <span *ngIf="!isLoading">
+            <strong>{{ reports.length }}</strong> ocorrências encontradas
+          </span>
+          <span *ngIf="isLoading">Carregando dados...</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content class="stats-area">
+        <div *ngIf="isLoading" class="loading-box">
+          <mat-spinner diameter="30"></mat-spinner>
+        </div>
+        <p *ngIf="!isLoading">
+          Explore o mapa para visualizar problemas de infraestrutura ou utilize as ações abaixo.
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions class="action-stack">
+        <button mat-flat-button color="primary" [routerLink]="['/report/create']">
+          <mat-icon>add_location_alt</mat-icon>
+          REPORTAR NOVA AVARIA
+        </button>
+
+        <button mat-stroked-button color="primary" [routerLink]="['/report/list']">
+          <mat-icon>format_list_bulleted</mat-icon>
+          LISTA DE AVARIAS
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
