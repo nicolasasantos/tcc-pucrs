@@ -3,13 +3,9 @@ import { ReportListComponent } from './components/report-list-component/report-l
 import { ReportEditComponent } from './components/report-edit-component/report-edit-component';
 import { ReportDetailsComponent } from './components/report-details-component/report-details-component';
 import { ReportCreateComponent } from './components/report-create-component/report-create-component';
+import { ReportDashboardComponent } from './components/report-dashboard-component/report-dashboard-component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '/report/list',
-    pathMatch: 'full',
-  },
   {
     path: 'report/list',
     component: ReportListComponent,
@@ -25,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'report/details/:id',
     component: ReportDetailsComponent,
+  },
+  {
+    path: '',
+    component: ReportDashboardComponent,
   },
 ];
