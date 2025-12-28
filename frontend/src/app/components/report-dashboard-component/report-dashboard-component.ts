@@ -61,6 +61,7 @@ export class ReportDashboardComponent implements OnInit {
     setTimeout(() => {
       if (this.map) {
         this.map.invalidateSize();
+        this.focusOnReports();
       }
     }, 100);
   }
@@ -100,7 +101,7 @@ export class ReportDashboardComponent implements OnInit {
       this.map.remove();
     }
 
-    this.map = L.map('main-map').setView(this.defaultLocation, 13);
+    this.map = L.map('main-map').setView(this.defaultLocation, 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
@@ -108,6 +109,7 @@ export class ReportDashboardComponent implements OnInit {
 
     setTimeout(() => {
       this.map?.invalidateSize();
+      this.focusOnReports();
     }, 200);
 
     this.getUserLocation();
@@ -119,21 +121,16 @@ export class ReportDashboardComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userPos: L.LatLngExpression = [position.coords.latitude, position.coords.longitude];
-          this.map?.setView(userPos, 14);
-          L.circle(userPos, {
-            radius: 200,
-            color: '#1976d2',
-            fillColor: '#2196f3',
-            fillOpacity: 0.3,
-          })
-            .addTo(this.map!)
-            .bindPopup('Você está aqui');
+          this.map?.setView(userPos, 12);
+          this.focusOnReports();
         },
         (error) => {
-          console.warn('Geolocalização negada ou falhou. Usando posição padrão.');
+          console.warn('Geolocalização negada ou falhou. Focando nos reports.');
           this.focusOnReports();
         }
       );
+    } else {
+      this.focusOnReports();
     }
   }
 
@@ -168,7 +165,7 @@ export class ReportDashboardComponent implements OnInit {
 
       if (coords.length > 0) {
         const group = L.featureGroup(coords);
-        this.map.fitBounds(group.getBounds().pad(0.2));
+        this.map.fitBounds(group.getBounds().pad(0.8));
       }
     }
   }
