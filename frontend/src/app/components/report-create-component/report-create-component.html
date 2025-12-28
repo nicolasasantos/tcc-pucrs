@@ -1,2 +1,154 @@
-<h5>Criar novo reporte de avaria</h5>
-<button matButton="filled" [routerLink]="'/report/list'">Ir para lista de avarias</button>
+<div class="container">
+  <mat-card class="report-card">
+    <mat-card-header>
+      <mat-card-title>Nova Avaria</mat-card-title>
+      <mat-card-subtitle>Envie uma foto. Se não tiver GPS, informe o endereço.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" class="form-layout">
+        <div class="category-row">
+          <mat-form-field appearance="outline" class="flex-grow">
+            <mat-label>Categoria</mat-label>
+            <mat-select formControlName="category">
+              <mat-option *ngFor="let cat of categories" [value]="cat._id">{{
+                cat.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button type="button" mat-mini-fab color="primary" (click)="addNewCategory()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="title" placeholder="Ex: Buraco na via" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descrição</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Gravidade</mat-label>
+          <mat-select formControlName="severity">
+            <mat-option value="low">Baixa</mat-option>
+            <mat-option value="medium">Média</mat-option>
+            <mat-option value="high">Alta</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="upload-container">
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" hidden />
+          <button
+            type="button"
+            mat-stroked-button
+            color="accent"
+            (click)="fileInput.click()"
+            class="full-width-btn"
+          >
+            <mat-icon>photo_camera</mat-icon>
+            {{ imageBase64 ? 'Trocar Foto' : 'Tirar Foto' }}
+          </button>
+
+          <div *ngIf="loadingCoords" class="status-info">
+            <mat-spinner diameter="20"></mat-spinner>
+            <span>Verificando GPS da imagem...</span>
+          </div>
+
+          <div *ngIf="reportForm.value.latitude && !loadingCoords" class="location-success">
+            <mat-icon>check_circle</mat-icon>
+            Localização capturada com sucesso
+          </div>
+        </div>
+
+        <div *ngIf="showAddressFields" class="manual-address-box">
+          <p class="warning-text">
+            <mat-icon>warning</mat-icon>
+            GPS não encontrado na foto. Digite o endereço:
+          </p>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Rua / Logradouro</mat-label>
+            <input matInput formControlName="addr_street" placeholder="Ex: Av. Paulista" />
+          </mat-form-field>
+
+          <div class="row">
+            <mat-form-field appearance="outline" class="col-4">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="addr_number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-8">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="addr_city" />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Estado (Sigla)</mat-label>
+            <input matInput formControlName="addr_state" placeholder="Ex: SP" />
+          </mat-form-field>
+
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="searchCoordinatesByAddress()"
+            [disabled]="searchingAddress"
+            class="full-width"
+          >
+            <mat-icon>search</mat-icon>
+            {{ searchingAddress ? 'Buscando...' : 'BUSCAR LOCALIZAÇÃO' }}
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="contact-section">
+          <h4>Seus Dados</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" />
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="form-actions-column">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            [disabled]="reportForm.invalid || loadingCoords"
+            class="action-button-main"
+          >
+            <mat-icon>save</mat-icon>
+            SALVAR REPORTE
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            [routerLink]="['/report/list']"
+            class="action-button-alt"
+          >
+            <mat-icon>format_list_bulleted</mat-icon>
+            LISTA DE AVARIAS
+          </button>
+
+          <button mat-button type="button" [routerLink]="['/']" class="action-button-alt">
+            <mat-icon>home</mat-icon>
+            VOLTAR AO INÍCIO
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
