@@ -1,39 +1,65 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.prod';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Report } from '../../models/report.model';
-import { Observable } from 'rxjs/internal/Observable';
+import { Category } from '../../models/category.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
-  private apiUrl = `${environment.apiUrl}/api/reports/`;
+  private reportsUrl = `${environment.apiUrl}/api/reports`;
+  private categoriesUrl = `${environment.apiUrl}/api/categories`;
 
   constructor(private http: HttpClient) {}
 
-  //get all reports
-  getReports(): Observable<Report[]> {
-    return this.http.get<Report[]>(this.apiUrl);
+  getReports(severityFilter?: string, categoryFilter?: string): Observable<Report[]> {
+    let params = new HttpParams();
+
+    if (severityFilter && severityFilter !== 'all') {
+      params = params.set('severity', severityFilter);
+    }
+
+    if (categoryFilter && categoryFilter !== 'all') {
+      params = params.set('category', categoryFilter);
+    }
+
+    return this.http.get<Report[]>(this.reportsUrl, { params });
   }
 
-  //get report by id
   getReportById(id: string): Observable<Report> {
-    return this.http.get<Report>(`${this.apiUrl}/${id}`);
+    return this.http.get<Report>(`${this.reportsUrl}/${id}`);
   }
 
-  //create report
-  createReport(report: Report): Observable<Report> {
-    return this.http.post<Report>(this.apiUrl, report);
+  createReport(report: any): Observable<Report> {
+    return this.http.post<Report>(this.reportsUrl, report);
   }
 
-  //update report
   updateReport(id: string, report: Report): Observable<Report> {
-    return this.http.put<Report>(`${this.apiUrl}/${id}`, report);
+    return this.http.put<Report>(`${this.reportsUrl}/${id}`, report);
   }
 
-  //delete report
+  // Votar usando put
+  voteFix(report: Report): Observable<Report> {
+    const updatedData = {
+      ...report,
+      vote_fix: (report.vote_fix || 0) + 1,
+    };
+    return this.updateReport(report._id, updatedData);
+  }
+
   deleteReport(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.reportsUrl}/${id}`);
+  }
+
+  // --- CATEGORIAS ---
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.categoriesUrl);
+  }
+
+  createCategory(name: string): Observable<Category> {
+    return this.http.post<Category>(this.categoriesUrl, { name });
   }
 }

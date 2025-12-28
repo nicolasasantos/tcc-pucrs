@@ -1,6 +1,9 @@
 export class Report {
   _id!: string;
-  category!: string;
+  category!: {
+    _id: string;
+    name: string;
+  };
   title!: string;
   description!: string;
   image!: string;
