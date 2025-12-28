@@ -40,7 +40,7 @@ export class ReportService {
     return this.http.put<Report>(`${this.reportsUrl}/${id}`, report);
   }
 
-  // Votar usando put
+  // Voting using PUT endpoint to update the report
   voteFix(report: Report): Observable<Report> {
     const updatedData = {
       ...report,
@@ -53,7 +53,7 @@ export class ReportService {
     return this.http.delete(`${this.reportsUrl}/${id}`);
   }
 
-  // --- CATEGORIAS ---
+  // --- Categories ---
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(this.categoriesUrl);
