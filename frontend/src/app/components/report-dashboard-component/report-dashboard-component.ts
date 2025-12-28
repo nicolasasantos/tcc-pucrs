@@ -37,7 +37,7 @@ export class ReportDashboardComponent implements OnInit {
   reports: Report[] = [];
   isLoading = true;
 
-  // Posição padrão (São Paulo) caso a geolocalização falhe
+  // Marking São Paulo as default location
   private defaultLocation: L.LatLngExpression = [-23.5505, -46.6333];
 
   ngOnInit(): void {
@@ -70,7 +70,7 @@ export class ReportDashboardComponent implements OnInit {
       error: (err) => {
         console.error('Erro ao carregar reportes:', err);
         this.isLoading = false;
-        this.initMap(); // Inicia o mapa mesmo com erro para não quebrar a UI
+        this.initMap();
       },
     });
   }
@@ -80,17 +80,14 @@ export class ReportDashboardComponent implements OnInit {
       this.map.remove();
     }
 
-    // Inicializa o mapa na posição padrão primeiro
     this.map = L.map('main-map').setView(this.defaultLocation, 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
 
-    // TENTA LOCALIZAR O USUÁRIO
     this.getUserLocation();
 
-    // Adiciona os marcadores dos reportes
     this.addReportMarkers();
   }
 
@@ -100,10 +97,8 @@ export class ReportDashboardComponent implements OnInit {
         (position) => {
           const userPos: L.LatLngExpression = [position.coords.latitude, position.coords.longitude];
 
-          // Foca na cidade do usuário com um zoom de 14 (nível de cidade/bairro)
           this.map?.setView(userPos, 14);
 
-          // Opcional: Adiciona um círculo azul na posição do usuário
           L.circle(userPos, {
             radius: 200,
             color: '#1976d2',
@@ -115,7 +110,7 @@ export class ReportDashboardComponent implements OnInit {
         },
         (error) => {
           console.warn('Geolocalização negada ou falhou. Usando posição padrão.');
-          // Se houver reportes, foca neles como alternativa
+
           this.focusOnReports();
         }
       );

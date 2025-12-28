@@ -47,7 +47,6 @@ export class ReportDetailsComponent implements OnInit {
     this.fixLeafletIcons();
   }
 
-  // Corrige os ícones do Leaflet que costumam quebrar no Angular
   private fixLeafletIcons() {
     const iconDefault = L.icon({
       iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -107,7 +106,6 @@ export class ReportDetailsComponent implements OnInit {
   onVote(): void {
     if (!this.report) return;
 
-    // --- TRAVA DE VOTO POR NAVEGADOR ---
     const votedItems = JSON.parse(localStorage.getItem('voted_reports') || '[]');
 
     if (votedItems.includes(this.report._id)) {
@@ -135,7 +133,7 @@ export class ReportDetailsComponent implements OnInit {
           next: (data) => {
             this.report = data;
 
-            // Salva no LocalStorage para impedir novo voto
+            // Add ip to local storage to prevent multiple votes
             votedItems.push(this.report._id);
             localStorage.setItem('voted_reports', JSON.stringify(votedItems));
 
